@@ -1,3 +1,6 @@
+import 'package:autoSplash/gridcell.dart';
+import 'package:autoSplash/services.dart';
+import 'package:autoSplash/splash.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
@@ -8,6 +11,7 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           headerWithSearch(size),
+          splashGrid(),
         ],
       ),
     );
@@ -79,6 +83,57 @@ class Body extends StatelessWidget {
               ),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  gridview(AsyncSnapshot<List<Splash>> snapshot) {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 1,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
+        children: snapshot.data.map(
+          (splash) {
+            return GridTile(
+              child: SplashCell(splash),
+            );
+          },
+        ).toList(),
+      ),
+    );
+  }
+
+  Container splashGrid() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: FutureBuilder<List<Splash>>(
+              future: Services.getPhotos(),
+              builder: (context, snapshot) {
+                // error
+                if (snapshot.hasError) {
+                  return Text('Error ${snapshot.error}');
+                }
+                // gridView
+                if (snapshot.hasData) {
+                  // todo: gridView
+                  return gridview(snapshot);
+                }
+
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
