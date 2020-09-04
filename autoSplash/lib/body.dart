@@ -11,7 +11,10 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           headerWithSearch(size),
-          splashGrid(),
+          Container(
+            height: size.height,
+            child: splashGrid(),
+          )
         ],
       ),
     );

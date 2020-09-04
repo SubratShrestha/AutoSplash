@@ -14,7 +14,7 @@ class SplashCell extends StatelessWidget {
       ),
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(0),
         child: Container(
             alignment: Alignment.center,
             child: Column(
@@ -28,8 +28,8 @@ class SplashCell extends StatelessWidget {
                     child: FadeInImage.assetNetwork(
                       placeholder: "images/error.jpg",
                       image: splash.thumb,
-                      width: 100,
-                      height: 100,
+                      // width: 100,
+                      // height: 100,
                     ),
                   ),
                 ),
