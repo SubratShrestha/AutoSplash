@@ -96,7 +96,7 @@ class Body extends StatelessWidget {
       padding: EdgeInsets.all(5),
       child: GridView.count(
         crossAxisCount: 2,
-        childAspectRatio: 1,
+        childAspectRatio: 0.75,
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
         children: snapshot.data.map(
