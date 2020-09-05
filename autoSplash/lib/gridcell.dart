@@ -10,9 +10,9 @@ class SplashCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(0),
       ),
-      color: Colors.white,
+      color: Colors.red,
       child: Padding(
         padding: EdgeInsets.all(0),
         child: Container(
@@ -20,7 +20,7 @@ class SplashCell extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 Flexible(
                   child: ClipRRect(
@@ -28,8 +28,9 @@ class SplashCell extends StatelessWidget {
                     child: FadeInImage.assetNetwork(
                       placeholder: "images/error.jpg",
                       image: splash.thumb,
-                      // width: 100,
-                      // height: 100,
+                      fit: BoxFit.none,
+                      width: splash.width.toDouble(),
+                      height: splash.height.toDouble(),
                     ),
                   ),
                 ),
