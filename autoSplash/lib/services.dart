@@ -4,14 +4,19 @@ import 'package:http/http.dart' as http;
 import 'key.dart';
 
 class Services {
-  static const String base_url = "https://api.unsplash.com/photos/?client_id=";
+  static const String base_url = "api.unsplash.com";
   static Future<List<Splash>> getPhotos() async {
     try {
       Key newKey = Key(baseUrl: base_url, key: null);
       newKey.getKey();
 
-      // final response = await http.get(base_url + newKey.key);
-      final response = await http.get(base_url + newKey.key);
+      final params = {'page': '1', 'per_page': '50'};
+
+      final uri = Uri.http(base_url, '/photos', params);
+      final response = await http.get(uri, headers: {
+        'Authorization': 'Client-ID ${newKey.key}',
+      });
+
       if (response.statusCode == 200) {
         print("status 200, yay!");
         List<Splash> list = parsePhotos(response.body);
