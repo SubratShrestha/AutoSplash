@@ -90,57 +90,6 @@ class Body extends StatelessWidget {
       ),
     );
   }
-
-  // gridview(AsyncSnapshot<List<Splash>> snapshot) {
-  //   return Padding(
-  //     padding: EdgeInsets.all(5),
-  //     child: GridView.count(
-  //       crossAxisCount: 2,
-  //       childAspectRatio: 0.75,
-  //       mainAxisSpacing: 4,
-  //       crossAxisSpacing: 4,
-  //       children: snapshot.data.map(
-  //         (splash) {
-  //           return GridTile(
-  //             child: SplashCell(splash),
-  //           );
-  //         },
-  //       ).toList(),
-  //     ),
-  //   );
-  // }
-
-  // Container splashGrid() {
-  //   return Container(
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.start,
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       mainAxisSize: MainAxisSize.min,
-  //       children: [
-  //         Flexible(
-  //           child: FutureBuilder<List<Splash>>(
-  //             future: Services.getPhotos(),
-  //             builder: (context, snapshot) {
-  //               // error
-  //               if (snapshot.hasError) {
-  //                 return Text('Error ${snapshot.error}');
-  //               }
-  //               // gridView
-  //               if (snapshot.hasData) {
-  //                 // todo: gridView
-  //                 return gridview(snapshot);
-  //               }
-
-  //               return Center(
-  //                 child: CircularProgressIndicator(),
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
 
 class SplashGrid extends StatefulWidget {
@@ -170,16 +119,14 @@ class _SplashGridState extends State<SplashGrid> {
       controller: _scrollController,
       scrollDirection: Axis.vertical,
       crossAxisCount: 2,
-      mainAxisSpacing: 10,
+      childAspectRatio: 0.75,
+      mainAxisSpacing: 2,
+      crossAxisSpacing: 2,
+      padding: EdgeInsets.all(5),
       physics: const AlwaysScrollableScrollPhysics(),
       children: imageList.map((splash) {
         return Container(
           alignment: Alignment.center,
-          height: MediaQuery.of(context).size.height * 0.2,
-          margin: EdgeInsets.only(left: 10, right: 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.red),
-          ),
           child: GridTile(
             child: SplashCell(splash),
           ),
@@ -204,15 +151,16 @@ class _SplashGridState extends State<SplashGrid> {
   }
 
   void addImage(int pageCount) async {
-    imgResponse response = imgResponse(
+    ImgResponse response = ImgResponse(
       splash: await Services.getPhotos(page: pageCount),
     );
-    imageList.add(response.splash);
+    imageList.addAll(response.splash);
+
     isLoading = false;
   }
 }
 
-class imgResponse {
+class ImgResponse {
   List<Splash> splash;
-  imgResponse({this.splash});
+  ImgResponse({this.splash});
 }
