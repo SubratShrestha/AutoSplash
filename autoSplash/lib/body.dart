@@ -14,7 +14,7 @@ class Body extends StatelessWidget {
           Container(
             height: size.height,
             child: splashGrid(),
-          )
+          ),
         ],
       ),
     );
@@ -22,7 +22,7 @@ class Body extends StatelessWidget {
 
   Container headerWithSearch(Size size) {
     return Container(
-      margin: EdgeInsets.only(bottom: 26),
+      margin: EdgeInsets.only(bottom: 10),
       height: size.height * 0.2,
       child: Stack(
         children: [

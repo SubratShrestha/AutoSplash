@@ -10,7 +10,7 @@ class Services {
       Key newKey = Key(baseUrl: base_url, key: null);
       newKey.getKey();
 
-      final params = {'page': '1', 'per_page': '50'};
+      final params = {'page': '1', 'per_page': '25'};
 
       final uri = Uri.http(base_url, '/photos', params);
       final response = await http.get(uri, headers: {
