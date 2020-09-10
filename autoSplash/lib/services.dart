@@ -5,12 +5,12 @@ import 'key.dart';
 
 class Services {
   static const String base_url = "api.unsplash.com";
-  static Future<List<Splash>> getPhotos() async {
+  static Future<List<Splash>> getPhotos({int page}) async {
     try {
       Key newKey = Key(baseUrl: base_url, key: null);
       newKey.getKey();
 
-      final params = {'page': '1', 'per_page': '25'};
+      final params = {'page': '$page', 'per_page': '10'};
 
       final uri = Uri.http(base_url, '/photos', params);
       final response = await http.get(uri, headers: {

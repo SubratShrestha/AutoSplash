@@ -13,7 +13,7 @@ class Body extends StatelessWidget {
           headerWithSearch(size),
           Container(
             height: size.height,
-            child: splashGrid(),
+            child: SplashGrid(),
           ),
         ],
       ),
@@ -91,54 +91,128 @@ class Body extends StatelessWidget {
     );
   }
 
-  gridview(AsyncSnapshot<List<Splash>> snapshot) {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
-        children: snapshot.data.map(
-          (splash) {
-            return GridTile(
-              child: SplashCell(splash),
-            );
-          },
-        ).toList(),
-      ),
-    );
+  // gridview(AsyncSnapshot<List<Splash>> snapshot) {
+  //   return Padding(
+  //     padding: EdgeInsets.all(5),
+  //     child: GridView.count(
+  //       crossAxisCount: 2,
+  //       childAspectRatio: 0.75,
+  //       mainAxisSpacing: 4,
+  //       crossAxisSpacing: 4,
+  //       children: snapshot.data.map(
+  //         (splash) {
+  //           return GridTile(
+  //             child: SplashCell(splash),
+  //           );
+  //         },
+  //       ).toList(),
+  //     ),
+  //   );
+  // }
+
+  // Container splashGrid() {
+  //   return Container(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Flexible(
+  //           child: FutureBuilder<List<Splash>>(
+  //             future: Services.getPhotos(),
+  //             builder: (context, snapshot) {
+  //               // error
+  //               if (snapshot.hasError) {
+  //                 return Text('Error ${snapshot.error}');
+  //               }
+  //               // gridView
+  //               if (snapshot.hasData) {
+  //                 // todo: gridView
+  //                 return gridview(snapshot);
+  //               }
+
+  //               return Center(
+  //                 child: CircularProgressIndicator(),
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+}
+
+class SplashGrid extends StatefulWidget {
+  @override
+  _SplashGridState createState() => _SplashGridState();
+}
+
+class _SplashGridState extends State<SplashGrid> {
+  List imageList = new List<Splash>();
+  bool isLoading = false;
+  int pageCount = 1;
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    addImage(1);
+
+    _scrollController = new ScrollController(initialScrollOffset: 5)
+      ..addListener(_scrollListener);
   }
 
-  Container splashGrid() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: FutureBuilder<List<Splash>>(
-              future: Services.getPhotos(),
-              builder: (context, snapshot) {
-                // error
-                if (snapshot.hasError) {
-                  return Text('Error ${snapshot.error}');
-                }
-                // gridView
-                if (snapshot.hasData) {
-                  // todo: gridView
-                  return gridview(snapshot);
-                }
-
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      controller: _scrollController,
+      scrollDirection: Axis.vertical,
+      crossAxisCount: 2,
+      mainAxisSpacing: 10,
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: imageList.map((splash) {
+        return Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height * 0.2,
+          margin: EdgeInsets.only(left: 10, right: 10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red),
           ),
-        ],
-      ),
+          child: GridTile(
+            child: SplashCell(splash),
+          ),
+        );
+      }).toList(),
     );
   }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      setState(() {
+        isLoading = true;
+        if (isLoading) {
+          print("loading more...");
+          pageCount += 1;
+          addImage(pageCount);
+        }
+      });
+    }
+  }
+
+  void addImage(int pageCount) async {
+    imgResponse response = imgResponse(
+      splash: await Services.getPhotos(page: pageCount),
+    );
+    imageList.add(response.splash);
+    isLoading = false;
+  }
+}
+
+class imgResponse {
+  List<Splash> splash;
+  imgResponse({this.splash});
 }
