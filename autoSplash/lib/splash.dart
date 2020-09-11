@@ -38,15 +38,17 @@
 
 class Splash {
   String thumb;
+  String full;
   int height;
   int width;
   String color;
 
-  Splash({this.thumb, this.height, this.width, this.color});
+  Splash({this.thumb, this.height, this.width, this.color, this.full});
 
   factory Splash.fromJson(Map<String, dynamic> json) {
     return Splash(
       thumb: json['urls']['small'] as String,
+      full: json['urls']['full'] as String,
       height: json['height'] as int,
       width: json['width'] as int,
       color: json['color'] as String,

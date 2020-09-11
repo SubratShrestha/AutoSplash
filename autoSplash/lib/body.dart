@@ -1,3 +1,4 @@
+import 'package:autoSplash/details.dart';
 import 'package:autoSplash/gridcell.dart';
 import 'package:autoSplash/services.dart';
 import 'package:autoSplash/splash.dart';
@@ -125,13 +126,28 @@ class _SplashGridState extends State<SplashGrid> {
       padding: EdgeInsets.all(5),
       physics: const AlwaysScrollableScrollPhysics(),
       children: imageList.map((splash) {
-        return Container(
-          alignment: Alignment.center,
-          child: GridTile(
-            child: SplashCell(splash),
+        return GestureDetector(
+          child: Container(
+            alignment: Alignment.center,
+            child: GridTile(
+              child: SplashCell(splash),
+            ),
           ),
+          onTap: () => detailsPage(context, splash),
         );
       }).toList(),
+    );
+  }
+
+  detailsPage(BuildContext context, Splash splash) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (BuildContext context) => SplashDetails(
+          curSplash: splash,
+        ),
+      ),
     );
   }
 
