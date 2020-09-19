@@ -110,8 +110,7 @@ class _SplashGridState extends State<SplashGrid> {
 
     addImage(1);
 
-    _scrollController = new ScrollController(initialScrollOffset: 5)
-      ..addListener(_scrollListener);
+    _scrollController = new ScrollController()..addListener(_scrollListener);
   }
 
   @override

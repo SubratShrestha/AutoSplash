@@ -24,11 +24,10 @@ class _SplashDetailsState extends State<SplashDetails> {
             width: MediaQuery.of(context).size.width,
             child: CachedNetworkImage(
               imageUrl: widget.curSplash.full,
-              placeholder: (context, url) => new Container(
-                height: 250,
-                width: 250,
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(),
+              placeholder: (context, url) => FadeInImage.assetNetwork(
+                placeholder: 'images/error.jpg',
+                image: widget.curSplash.thumb,
+                fit: BoxFit.cover,
               ),
               fit: BoxFit.cover,
             ),

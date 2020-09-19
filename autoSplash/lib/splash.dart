@@ -48,7 +48,7 @@ class Splash {
   factory Splash.fromJson(Map<String, dynamic> json) {
     return Splash(
       thumb: json['urls']['small'] as String,
-      full: json['urls']['full'] as String,
+      full: json['urls']['regular'] as String,
       height: json['height'] as int,
       width: json['width'] as int,
       color: json['color'] as String,
